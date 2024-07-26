@@ -11,7 +11,6 @@
         <th>Name</th>
         <th>Capital</th>
         <th>Population</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +22,7 @@
         <td>{{country.name.common}}</td>
         <td>{{country.capital}}</td>
         <td>{{country.population | number}}</td>
-        <td></td>
+        <td><a [routerLink]="['/countries/by', country.cca3]">details</a></td>
       </tr>
     </tbody>
   </table>
