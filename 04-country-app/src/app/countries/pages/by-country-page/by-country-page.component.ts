@@ -1,21 +1,31 @@
-import { Component } from '@angular/core';
-import { CountriesService } from '../../services/contries.service';
+import { Component, OnInit } from '@angular/core';
 import { Country } from '../../interfaces/country';
+import { CountriesService } from '../../services/countries.service';
 
 @Component({
   selector: 'app-by-country-page',
   templateUrl: './by-country-page.component.html',
-  styles: ``
+  styles: [
+  ]
 })
-export class ByCountryPageComponent {
-  countries: Country[] = []
-  constructor(private countriesService: CountriesService) { }
+export class ByCountryPageComponent implements OnInit {
 
-  searchByCountry(query: string) {
-    query = query.toLocaleLowerCase().trim()
-    this.countriesService.searchByCountry(query)
-      .subscribe(countries => {
-        this.countries = countries
-      })
+  public countries: Country[] = [];
+  public initialValue: string = '';
+
+  constructor( private countriesService: CountriesService ) {}
+
+  ngOnInit(): void {
+    this.countries = this.countriesService.cacheStore.byCountries.countries;
+    this.initialValue = this.countriesService.cacheStore.byCountries.term;
   }
+
+  searchByCountry( term: string ):void  {
+    this.countriesService.searchCountry( term )
+      .subscribe( countries => {
+        this.countries = countries;
+      });
+
+  }
+
 }

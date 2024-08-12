@@ -2,6 +2,7 @@ import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task } from 'src/app/models/task.model';
+type Filter = 'all'|'pending'|'completed'
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import { Task } from 'src/app/models/task.model';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 
 export class HomeComponent {
   editingIndex = signal<null|number>(null)
@@ -22,11 +24,11 @@ export class HomeComponent {
     }
   ]);
 
-  filter = signal('all')
+  filter = signal<Filter>('all')
 
   newTaskCtrl = new FormControl('', {
     nonNullable: true,
-    validators: [ 
+    validators: [
       Validators.required,
       Validators.minLength(3),
     ]
@@ -45,7 +47,7 @@ export class HomeComponent {
     })
   })
 
- updateFilter(newFilter: string) {
+ updateFilter(newFilter: Filter) {
   this.filter.set(newFilter)
  }
 
@@ -95,7 +97,7 @@ export class HomeComponent {
     const input = event.target as HTMLInputElement
     this.tasks.update(tasks => {
       const newTitle = input.value.trim()
-      if (newTitle != '') {        
+      if (newTitle != '') {
         tasks.find(task => task.id === id)!!.title = newTitle
       }
 
